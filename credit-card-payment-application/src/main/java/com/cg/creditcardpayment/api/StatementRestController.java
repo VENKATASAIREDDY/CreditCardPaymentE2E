@@ -1,0 +1,124 @@
+package com.cg.creditcardpayment.api;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.cg.creditcardpayment.exception.CreditCardException;
+import com.cg.creditcardpayment.exception.CustomerException;
+import com.cg.creditcardpayment.exception.StatementException;
+import com.cg.creditcardpayment.model.StatementModel;
+import com.cg.creditcardpayment.service.IStatementService;
+
+/**
+ * 
+ * @author P Venkata Sai Reddy
+ *
+ */
+@RestController
+@RequestMapping("/home/customer/creditcard/statements")
+@CrossOrigin("http://localhost:3000")
+public class StatementRestController {
+
+	@Autowired
+	private IStatementService statementService;
+	
+	/**
+	 * 
+	 * @return List of Statement Objects
+	 */
+	@GetMapping()
+	public ResponseEntity<List<StatementModel>> findAll() {
+		return ResponseEntity.ok(statementService.findAll());
+	}
+	
+	/**
+	 * 
+	 * @param statementId
+	 * @return Statement Object 
+	 * @throws StatementException
+	 */
+	@GetMapping("/{statementId}")
+	public ResponseEntity<StatementModel> findById(@PathVariable("statementId") Long statementId) throws StatementException{
+		return ResponseEntity.ok(statementService.findById(statementId));
+	}
+	
+	/**
+	 * 
+	 * @param cardNumber
+	 * @return Statment Object
+	 * @throws CreditCardException
+	 * @throws StatementException
+	 */
+	@GetMapping("/generateBill/{cardNumber}")
+	public ResponseEntity<StatementModel> getBill(@PathVariable("cardNumber") String cardNumber) throws CreditCardException, StatementException{
+		return ResponseEntity.ok(statementService.getBilledStatement(cardNumber));
+	}
+	
+	/**
+	 * 
+	 * @param cardNumber
+	 * @return Statement Object
+	 * @throws CreditCardException
+	 */
+	@GetMapping("/generateUnBilled/{cardNumber}")
+	public ResponseEntity<StatementModel> getUnBill(@PathVariable("cardNumber") String cardNumber) throws CreditCardException{
+		return ResponseEntity.ok(statementService.getUnBilledStatement(cardNumber));
+	}
+	
+	/**
+	 * 
+	 * @param customerId
+	 * @return List of Statement Objects
+	 * @throws CreditCardException
+	 * @throws CustomerException
+	 * @throws StatementException
+	 */
+	@GetMapping("/generateBill/user/{customerId}")
+	public ResponseEntity<List<StatementModel>> getBilluser(@PathVariable("customerId") String customerId) throws CreditCardException, CustomerException, StatementException{
+		return ResponseEntity.ok(statementService.getBilledStatementsById(customerId));
+	}
+	
+	/**
+	 * 
+	 * @param customerId
+	 * @return List of Statement Objects
+	 * @throws CreditCardException
+	 * @throws CustomerException
+	 * @throws StatementException
+	 */
+	@GetMapping("/generateUnBilled/user/{customerId}")
+	public ResponseEntity<List<StatementModel>> getUnBilluser(@PathVariable("customerId") String customerId) throws CreditCardException, CustomerException, StatementException{
+		return ResponseEntity.ok(statementService.getUnBilledStatementsById(customerId));
+	}
+	
+	/**
+	 * 
+	 * @param cardNumber
+	 * @return List of Statement Objects
+	 * @throws CreditCardException
+	 */
+	@GetMapping("/history/{cardNumber}")
+	public ResponseEntity<List<StatementModel>> statementHistory(@PathVariable("cardNumber") String cardNumber) throws CreditCardException {
+		return ResponseEntity.ok(statementService.statementHistory(cardNumber));
+	}
+	
+	/**
+	 * 
+	 * @param userId
+	 * @return List of Statement Objects
+	 * @throws CreditCardException
+	 * @throws CustomerException
+	 */
+	@GetMapping("/history/user/{userId}")
+	public ResponseEntity<List<StatementModel>> statementHistoryByUserId(@PathVariable("userId") String userId) throws CreditCardException, CustomerException {
+		return ResponseEntity.ok(statementService.statementHistoryByUserId(userId));
+	}
+	
+}

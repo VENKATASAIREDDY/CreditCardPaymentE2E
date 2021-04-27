@@ -1,0 +1,314 @@
+package com.cg.creditcardpayment.model;
+
+/**
+* <h1>Credit Card Model</h1>
+* The Credit Card Model program implements an application such that
+* the Customer can Add his Credit Cards to the application and perform some validation and send the details to entity.
+* 
+* <p>
+* 
+*
+* @author  Abhilash
+* @version 1.0
+* @since   2021-03-31 
+*/
+
+import java.time.LocalDate;
+
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+public class CreditCardModel {
+	
+	@NotNull(message="card number cannot be null")	
+	@NotBlank(message="card number cannot be blank")
+	@Pattern(regexp = "[0-9]{16}", message="Card Number should be valid number of length 16")
+	private String cardNumber;
+	
+	
+	@NotNull(message="card name cannot be null")
+	private CardName cardName;
+	
+	@NotNull(message="card type cannot be null")
+	private CardType cardType;
+	
+	@NotNull(message="card expiry date cannot be null")	
+	@Future(message="Expiry date cannot be in future")
+    private LocalDate expiryDate;
+	
+	
+	@NotNull(message="Bank name cannot be null")	
+	@NotBlank(message="Bank name cannot be blank")
+	private String bankName;
+	
+	@NotNull(message="cvv cannot be null")
+	@Min(value=100, message="CVV should have length of 3")
+	@Max(value=999,message="CVV should have length of 3")
+    private Integer cvv;
+	
+	
+	@NotNull(message="limit cannot be null")
+    private Double cardLimit;
+	
+	@NotNull(message="Used limit cannot be null")
+    private Double usedLimit;
+	
+/**
+ * 	@JsonProperty(access = Access.WRITE_ONLY)
+ */
+    private String customerId;
+	
+	public CreditCardModel() {
+		/* Default Constructor */
+	}
+
+
+	/**
+	 * @param cardNumber
+	 * @param cardName
+	 * @param cardType
+	 * @param expiryDate
+	 * @param bankName
+	 * @param cvv
+	 * @param cardLimit
+	 * @param usedLimit
+	 * @param customerId
+	 */
+	public CreditCardModel(
+			@NotNull(message = "card number cannot be null") @NotBlank(message = "card number cannot be blank") @Pattern(regexp = "[0-9]{16}") String cardNumber,
+			@NotNull(message = "card name cannot be null") @NotBlank(message = "card name cannot be blank") CardName cardName,
+			@NotNull(message = "card type cannot be null") @NotBlank(message = "card type cannot be blank") CardType cardType,
+			@NotNull(message = "card expiry date cannot be null") @Future(message = "Expiry date cannot be in future") LocalDate expiryDate,
+			@NotNull(message = "Bank name cannot be null") @NotBlank(message = "Bank name cannot be blank") String bankName,
+			@NotNull(message = "cvv cannot be null") @NotBlank(message = "cvv cannot be blank") @Pattern(regexp = "[0-9]{3}") Integer cvv,
+			@NotNull(message = "limit cannot be null") @NotBlank(message = "limit cannot be blank") Double cardLimit,
+			@NotNull(message = "limit cannot be null") @NotBlank(message = "limit cannot be blank") Double usedLimit,
+			@NotNull(message = "customerId cannot be null") @NotBlank(message = "customerId cannot be blank") String customerId) {
+		super();
+		this.cardNumber = cardNumber;
+		this.cardName = cardName;
+		this.cardType = cardType;
+		this.expiryDate = expiryDate;
+		this.bankName = bankName;
+		this.cvv = cvv;
+		this.cardLimit = cardLimit;
+		this.usedLimit = usedLimit;
+		this.customerId = customerId;
+	}
+	
+
+	/**
+	 * @return the cardNumber
+	 */
+	public String getCardNumber() {
+		return cardNumber;
+	}
+
+
+	/**
+	 * @param cardNumber the cardNumber to set
+	 */
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
+	}
+
+
+	/**
+	 * @return the cardName
+	 */
+	public CardName getCardName() {
+		return cardName;
+	}
+
+
+	/**
+	 * @param cardName the cardName to set
+	 */
+	public void setCardName(CardName cardName) {
+		this.cardName = cardName;
+	}
+
+
+	/**
+	 * @return the cardType
+	 */
+	public CardType getCardType() {
+		return cardType;
+	}
+
+
+	/**
+	 * @param cardType the cardType to set
+	 */
+	public void setCardType(CardType cardType) {
+		this.cardType = cardType;
+	}
+
+
+	/**
+	 * @return the expiryDate
+	 */
+	public LocalDate getExpiryDate() {
+		return expiryDate;
+	}
+
+
+	/**
+	 * @param expiryDate the expiryDate to set
+	 */
+	public void setExpiryDate(LocalDate expiryDate) {
+		this.expiryDate = expiryDate;
+	}
+
+
+	/**
+	 * @return the bankName
+	 */
+	public String getBankName() {
+		return bankName;
+	}
+
+
+	/**
+	 * @param bankName the bankName to set
+	 */
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+
+
+	/**
+	 * @return the cvv
+	 */
+	public Integer getCvv() {
+		return cvv;
+	}
+
+
+	/**
+	 * @param cvv the cvv to set
+	 */
+	public void setCvv(Integer cvv) {
+		this.cvv = cvv;
+	}
+
+
+	/**
+	 * @return the cardLimit
+	 */
+	public Double getCardLimit() {
+		return cardLimit;
+	}
+
+
+	/**
+	 * @param cardLimit the cardLimit to set
+	 */
+	public void setCardLimit(Double cardLimit) {
+		this.cardLimit = cardLimit;
+	}
+
+
+	/**
+	 * @return the usedLimit
+	 */
+	public Double getUsedLimit() {
+		return usedLimit;
+	}
+
+
+	/**
+	 * @param usedLimit the usedLimit to set
+	 */
+	public void setUsedLimit(Double usedLimit) {
+		this.usedLimit = usedLimit;
+	}
+
+
+	/**
+	 * @return the customerId
+	 */
+	public String getCustomerId() {
+		return customerId;
+	}
+
+
+	/**
+	 * @param customerId the customerId to set
+	 */
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
+	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((bankName == null) ? 0 : bankName.hashCode());
+		result = prime * result + ((cardName == null) ? 0 : cardName.hashCode());
+		result = prime * result + ((cardNumber == null) ? 0 : cardNumber.hashCode());
+		result = prime * result + ((cardType == null) ? 0 : cardType.hashCode());
+		result = prime * result + ((cvv == null) ? 0 : cvv.hashCode());
+		result = prime * result + ((expiryDate == null) ? 0 : expiryDate.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CreditCardModel other = (CreditCardModel) obj;
+		if (bankName == null) {
+			if (other.bankName != null)
+				return false;
+		} else if (!bankName.equals(other.bankName))
+			return false;
+		if (cardName == null) {
+			if (other.cardName != null)
+				return false;
+		} else if (!cardName.equals(other.cardName))
+			return false;
+		if (cardNumber == null) {
+			if (other.cardNumber != null)
+				return false;
+		} else if (!cardNumber.equals(other.cardNumber))
+			return false;
+		if (cardType == null) {
+			if (other.cardType != null)
+				return false;
+		} else if (!cardType.equals(other.cardType))
+			return false;
+		if (cvv == null) {
+			if (other.cvv != null)
+				return false;
+		} else if (!cvv.equals(other.cvv))
+			return false;
+		if (expiryDate == null) {
+			if (other.expiryDate != null)
+				return false;
+		} else if (!expiryDate.equals(other.expiryDate))
+			return false;
+		return true;
+	}
+
+
+	@Override
+	public String toString() {
+		return String.format(
+				"CreditCardModel [cardNumber=%s, cardName=%s, cardType=%s, expiryDate=%s, bankName=%s, cvv=%s]",
+				cardNumber, cardName, cardType, expiryDate, bankName, cvv);
+	}
+
+	
+    
+}
