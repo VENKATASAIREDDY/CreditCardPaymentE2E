@@ -252,7 +252,7 @@ public class StatementServiceImpl implements IStatementService {
 	}
 
 	@Override
-	public List<StatementModel> statementHistory(String cardNumber) throws CreditCardException {
+	public List<StatementModel> statementHistory(String cardNumber) throws CreditCardException, StatementException {
 		if(cardNumber==null) {
 			throw new CreditCardException("Card Number cannot be Null");
 		}
@@ -264,7 +264,7 @@ public class StatementServiceImpl implements IStatementService {
 	}
 
 	@Override
-	public List<StatementModel> statementHistoryByUserId(String userId) throws CreditCardException, CustomerException {
+	public List<StatementModel> statementHistoryByUserId(String userId) throws CreditCardException, CustomerException, StatementException {
 		if(userId==null) {
 			throw new CustomerException("UserId cannot be Null");
 		}
@@ -304,10 +304,11 @@ public class StatementServiceImpl implements IStatementService {
 				statements.add(statement);
 			}
 		}
-		statements=statements.stream().sorted(Comparator.comparingDouble(StatementModel::getDueAmount).reversed()).collect(Collectors.toList());
 		if(statements.isEmpty()) {
 			throw new StatementException("No statements Exists");
 		}
+		statements=statements.stream().sorted(Comparator.comparing(StatementModel::getBillDate).thenComparing(StatementModel::getDueDate).reversed()).collect(Collectors.toList());
+
 		return statements;
 	}
 

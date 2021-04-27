@@ -3,6 +3,7 @@ package com.cg.creditcardpayment.service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,16 @@ import com.cg.creditcardpayment.model.CreditCardModel;
 import com.cg.creditcardpayment.model.TransactionModel;
 import com.cg.creditcardpayment.model.TransactionStatus;
 
+/**
+* <h1>TransactionServiceImpl</h1>
+* TransactionServiceImpl is a program where all the methods in 	TransactionServiceImpl are implemented
+* <p>
+* 
+*
+* @author  Gajula Naveen
+* @version 1.0
+* @since   2021-03-31 
+*/
 @Service
 public class TransactionServiceImpl implements ITransactionService {
 	
@@ -45,7 +56,11 @@ public class TransactionServiceImpl implements ITransactionService {
 	public TransactionServiceImpl() {
 		
 	}
-
+	/**
+	 * Parameterized constructor
+	 * @param transactionRepo		The object of ITransactionRepository
+	 * @param creditCardRepo		the object of ICreditCardRepository
+	 */
 	public TransactionServiceImpl(ITransactionRepository transactionRepo,ICreditCardRepository creditCardRepo) {
 		super();
 		this.transactionRepo = transactionRepo;
@@ -74,7 +89,12 @@ public class TransactionServiceImpl implements ITransactionService {
 		this.parser = parser;
 	}
 
-
+	/**
+	 * This method is used to add the new transaction
+	 * @param transaction which contains the new transaction details
+	 * @return TransactionModel which is added 
+	 * @throws TransactionException when exception occurs
+	 */
 	@Override
 	public TransactionModel add(TransactionModel transaction) throws TransactionException {
 		if(transaction !=null) {
@@ -87,7 +107,12 @@ public class TransactionServiceImpl implements ITransactionService {
 		}
 		return transaction;
 	}
-
+	/**
+	 * This method is used to update the old transaction
+	 * @param transaction which contains the updated transaction details
+	 * @return TransactionModel which is updated 
+	 * @throws TransactionException when exception occurs
+	 */
 	@Override
 	public TransactionModel save(TransactionModel transaction) throws TransactionException {
 		if(transaction==null) {
@@ -95,7 +120,10 @@ public class TransactionServiceImpl implements ITransactionService {
 		}
 		return parser.parse(transactionRepo.save(parser.parse(transaction)));
 	}
-
+	/**
+	 * This method list all the transactions
+	 * @return List<TransactionModel> which contains all the transaction details
+	 */
 	@Override
 	public List<TransactionModel> findAll() {
 		return transactionRepo.findAll().stream().map(parser::parse).collect(Collectors.toList());
@@ -129,7 +157,14 @@ public class TransactionServiceImpl implements ITransactionService {
 		return transactionRepo.existsById(transactionId);
 	}
 
-
+	/**
+	 * This method is used to make a transactions
+	 * @param cardNumber from which the transactions should be made
+	 * @param amount of the transaction
+	 * @param description of the transactions
+	 * @return TransactionModel after the transaction is done
+	 * @throws CreditCardException when the exception occurs
+	 */
 	@Override
 	public TransactionModel transaction(String cardNumber,Double amount,String discription) throws CreditCardException {
 		if(cardNumber==null) {
@@ -160,7 +195,12 @@ public class TransactionServiceImpl implements ITransactionService {
 		transact=parser.parse(transactionRepo.save(parser.parse(transact)));
 		return transact;
 	}
-	
+	/**
+	 * This method is used to get transactionHistory
+	 * @param cardNumber to get transaction history
+	 * @return List<TransationModel> which contains all the transaction of the cardNumber
+	 * @throws CreditCardException when exception occurs
+	 */
 	@Override
 	public List<TransactionModel> transactionHistory(String cardNumber) throws CreditCardException {
 		if(cardNumber==null) {
@@ -187,6 +227,7 @@ public class TransactionServiceImpl implements ITransactionService {
 		for(int i=0;i<creditCards.size();i++) {
 			transactions.addAll(this.transactionHistory(creditCards.get(i).getCardNumber()));
 		}
+		transactions = transactions.stream().sorted(Comparator.comparing(TransactionModel::getTransactionDate).thenComparing(TransactionModel::getTransactionTime).reversed()).collect(Collectors.toList());
 		return transactions;
 	}
 

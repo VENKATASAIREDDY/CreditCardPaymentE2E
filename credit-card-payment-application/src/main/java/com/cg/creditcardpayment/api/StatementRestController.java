@@ -103,9 +103,10 @@ public class StatementRestController {
 	 * @param cardNumber
 	 * @return List of Statement Objects
 	 * @throws CreditCardException
+	 * @throws StatementException 
 	 */
 	@GetMapping("/history/{cardNumber}")
-	public ResponseEntity<List<StatementModel>> statementHistory(@PathVariable("cardNumber") String cardNumber) throws CreditCardException {
+	public ResponseEntity<List<StatementModel>> statementHistory(@PathVariable("cardNumber") String cardNumber) throws CreditCardException, StatementException {
 		return ResponseEntity.ok(statementService.statementHistory(cardNumber));
 	}
 	
@@ -115,9 +116,10 @@ public class StatementRestController {
 	 * @return List of Statement Objects
 	 * @throws CreditCardException
 	 * @throws CustomerException
+	 * @throws StatementException 
 	 */
 	@GetMapping("/history/user/{userId}")
-	public ResponseEntity<List<StatementModel>> statementHistoryByUserId(@PathVariable("userId") String userId) throws CreditCardException, CustomerException {
+	public ResponseEntity<List<StatementModel>> statementHistoryByUserId(@PathVariable("userId") String userId) throws CreditCardException, CustomerException, StatementException {
 		return ResponseEntity.ok(statementService.statementHistoryByUserId(userId));
 	}
 	

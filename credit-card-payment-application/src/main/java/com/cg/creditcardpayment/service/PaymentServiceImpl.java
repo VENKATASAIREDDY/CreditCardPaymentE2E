@@ -29,10 +29,21 @@ import com.cg.creditcardpayment.model.CreditCardModel;
 import com.cg.creditcardpayment.model.PaymentModel;
 import com.cg.creditcardpayment.model.StatementModel;
 
-
+/**
+* <h1>PaymentServiceImpl</h1>
+* TransactionServiceImpl is a program where all the methods in 	TransactionServiceImpl are implemented
+* <p>
+* 
+*
+* @author  P Pranava Charitra
+* @version 1.0
+* @since   2021-03-31 
+*/
 @Service
 public class PaymentServiceImpl implements IPaymentService {
-	
+	/**
+	 * This a local variable: {@link #paymentRepo} defines the object of IPaymentRepository
+	 */
 	@Autowired
 	private IPaymentRepository paymentRepo;
 	
@@ -41,7 +52,9 @@ public class PaymentServiceImpl implements IPaymentService {
 	
 	@Autowired
 	private ICustomerRepository customerRepo;
-	
+	/**
+	 * This a local variable: {@link #accountRepo} defines the object of IAccountRepository
+	 */
 	@Autowired
 	private IAccountRepository accountRepo;
 	
@@ -167,13 +180,15 @@ public class PaymentServiceImpl implements IPaymentService {
 
 
 	/**
-	 * @param PaymentModel Object
-	 * @param statementId Long
-	 * @param accountNumber String
-	 * @return PaymentModel Object
-	 * 
-	 * @throws PaymentException, CreditCardException, StatementException, AccountException
-	 * 
+	 * This method is used to pay bill of the credit card
+	 * @param payment which contains all the details of payment
+	 * @param statementId to which the payment is done
+	 * @param accountNumber from which the payment is done
+	 * @return PaymentModel which contains all the payment details
+	 * @throws PaymentException when payment related exception occurs
+	 * @throws CreditCardException when credit card related exception occurs
+	 * @throws StatementException when statement related exception occurs
+	 * @throws AccountException when account related exception occurs 
 	 */
 	@Override
 	public PaymentModel payBill(PaymentModel pay, Long statementId,String accountNumber) throws PaymentException, CreditCardException, StatementException, AccountException {
@@ -277,7 +292,15 @@ public class PaymentServiceImpl implements IPaymentService {
 		return payment;
 	}
 
-
+	/**
+	 * This method is used to pay bill of the credit card
+	 * @param payment which contains payment details
+	 * @param statementId to which the payment is done
+	 * @return PaymentModel which contains all the details of payment
+	 * @throws PaymentException When payment related exception occurs
+	 * @throws CreditCardException when creditCard related exception occurs
+	 * @throws StatementException when statement related exception occurs
+	 */
 	@Override
 	public PaymentModel payBill(PaymentModel pay, Long statementId) throws PaymentException, CreditCardException, StatementException{
 		CreditCardEntity card=creditCardRepo.findById(pay.getCardNumber()).orElse(null);
@@ -314,7 +337,15 @@ public class PaymentServiceImpl implements IPaymentService {
 		paymentService.add(payment);
 		return payment;
 	}
-
+	/**
+	 *  This method is used to pay for credit card
+	 * @param pay which is payment model
+	 * @param cardNumber to which money has to be paid
+	 * @return PaymentModel which contains the details of payment
+	 * @throws PaymentException when payment related exception occurs
+	 * @throws CreditCardException when credit card related exception occurs
+	 * @throws StatementException when statement related exception related exception occurs
+	 */
 	@Override
 	public PaymentModel payForCreditCard(PaymentModel pay, String cardNumber) throws PaymentException, CreditCardException, StatementException{
 		CreditCardEntity card=creditCardRepo.findById(cardNumber).orElse(null);
@@ -340,7 +371,12 @@ public class PaymentServiceImpl implements IPaymentService {
 		paymentService.add(payment);
 		return payment;
 	}
-
+	/**
+	 * This method displays the payment history of the credit card
+	 * @param cardNumber to which the payment history has to be fetched
+	 * @return List<PaymentModel> which contains all the payments
+	 * @throws CreditCardException when the exception occurs
+	 */
 	@Override
 	public List<PaymentModel> paymentHistory(String cardNumber) throws CreditCardException {
 		CreditCardEntity card=creditCardRepo.findById(cardNumber).orElse(null);
@@ -352,6 +388,13 @@ public class PaymentServiceImpl implements IPaymentService {
 		return card.getPayments().stream().map(parser::parse).collect(Collectors.toList());
 	}
 	
+	/**
+	 * This method displays the payment history of the credit card
+	 * @param userId to which the payment history has to be fetched
+	 * @return List<PaymentModel> which contains all the payments
+	 * @throws CreditCardException when the exception occurs
+	 * @throws CustomerException when the exception occurs
+	 */
 	@Override
 	public List<PaymentModel> paymentHistoryById(String userId) throws CustomerException, CreditCardException {
 		if(userId==null) {
@@ -370,6 +413,8 @@ public class PaymentServiceImpl implements IPaymentService {
 		for(int i=0;i<creditCards.size();i++) {
 			payments.addAll(this.paymentHistory(creditCards.get(i).getCardNumber()));
 		}
+		payments = payments.stream().sorted(Comparator.comparing(PaymentModel::getPaidDate).reversed().thenComparing(PaymentModel::getPaidTime).reversed()).collect(Collectors.toList());
+		
 		return payments;
 	}
 

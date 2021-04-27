@@ -14,41 +14,84 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.cg.creditcardpayment.model.PaymentMethod;
-
+/**
+* <h1>PaymentEntity</h1>
+* The Payment Entity program implements an application such that
+* the data of the payment is sent to the database
+* <p>
+* 
+*
+* @author  P Pranava Charitra
+* @version 1.0
+* @since   2021-03-31 
+*/
 @Entity
 @Table(name="payments")
 public class PaymentEntity {
-	
+	/**
+	 * This a local variable: {@link #paymentId} defines the unique Id for each Payment
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@Id
 	@Column(name="payment_id")
 	private Long paymentId;
 	
+	/**
+	 * This a local variable: {@link #method} defines the payment method to make payment
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@Enumerated(EnumType.STRING)
 	@Column(name="payment_method",nullable=false)
 	private PaymentMethod method;
 
+	/**
+	 * This a local variable: {@link #paidDate} defines the payment date
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@Column(name="paid_date")
 	private LocalDate paidDate;
 
+	/**
+	 * This a local variable: {@link #paidTime} defines the payment time
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@Column(name="paid_time")
 	private LocalTime paidTime;
 	
+	/**
+	 * This a local variable: {@link #amount} defines the unique Id for Customer
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@Column(name="amount",nullable=false)
 	private Double amount;
 	
+	/**
+	 * This a local variable: {@link #card} defines the card to which the payment has to be made
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="card_number")
 	private CreditCardEntity card;
 
+	/**
+	 * Default Constructor
+	 */
 	public PaymentEntity() {
 		/*Default Constructor*/
 	}
 
 	/**
-	 * @param paymentId
-	 * @param method
-	 * @param amount
-	 * @param card
+	 * Parameterized Constructor with parameters
+	 * @param paymentId  		the unique id for Payment
+	 * @param method			the method for payment
+	 * @param amount			the amount paid
+	 * @param cardNumber		the card for which the payment is made
 	 */
 	public PaymentEntity(Long paymentId, PaymentMethod method,LocalDate paidDate,LocalTime paidTime, Double amount,CreditCardEntity card) {
 		super();
@@ -60,55 +103,91 @@ public class PaymentEntity {
 		this.card = card;
 	}
 
-	public LocalDate getPaidDate() {
-		return paidDate;
-	}
+	
 
-	public void setPaidDate(LocalDate paidDate) {
-		this.paidDate = paidDate;
-	}
-
-	public LocalTime getPaidTime() {
-		return paidTime;
-	}
-
-	public void setPaidTime(LocalTime paidTime) {
-		this.paidTime = paidTime;
-	}
-
+	/**
+	 * @return the paymentId
+	 */
 	public Long getPaymentId() {
 		return paymentId;
 	}
 
-
-	public PaymentMethod getMethod() {
-		return method;
-	}
-
-	public void setMethod(PaymentMethod method) {
-		this.method = method;
-	}
-
-	public Double getAmount() {
-		return amount;
-	}
-
-	public void setAmount(Double amount) {
-		this.amount = amount;
-	}
-
+	/**
+	 * @param paymentId the paymentId to set
+	 */
 	public void setPaymentId(Long paymentId) {
 		this.paymentId = paymentId;
 	}
 
+	/**
+	 * @return the method
+	 */
+	public PaymentMethod getMethod() {
+		return method;
+	}
+
+	/**
+	 * @param method the method to set
+	 */
+	public void setMethod(PaymentMethod method) {
+		this.method = method;
+	}
+
+	/**
+	 * @return the paidDate
+	 */
+	public LocalDate getPaidDate() {
+		return paidDate;
+	}
+
+	/**
+	 * @param paidDate the paidDate to set
+	 */
+	public void setPaidDate(LocalDate paidDate) {
+		this.paidDate = paidDate;
+	}
+
+	/**
+	 * @return the paidTime
+	 */
+	public LocalTime getPaidTime() {
+		return paidTime;
+	}
+
+	/**
+	 * @param paidTime the paidTime to set
+	 */
+	public void setPaidTime(LocalTime paidTime) {
+		this.paidTime = paidTime;
+	}
+
+	/**
+	 * @return the amount
+	 */
+	public Double getAmount() {
+		return amount;
+	}
+
+	/**
+	 * @param amount the amount to set
+	 */
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
+
+	/**
+	 * @return the card
+	 */
 	public CreditCardEntity getCard() {
 		return card;
 	}
 
+	/**
+	 * @param card the card to set
+	 */
 	public void setCard(CreditCardEntity card) {
 		this.card = card;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -121,6 +200,18 @@ public class PaymentEntity {
 		return result;
 	}
 
+	/**
+	 * Indicates whether some other object is "equal to" this one.<br><br>
+	 * The <strong>equals</strong> method for class <strong>Object</strong> implements the most discriminating possible equivalence relation on objects; 
+	 * that is, for any non-null reference values x and y, this method returns <strong>true</strong> if and only if x and y refer to the same object (<strong>x == y</strong> has the value <strong>true</strong>).
+	 * <br><br>Note that it is generally necessary to override the <strong>hashCode</strong> method whenever this method is overridden, 
+	 * so as to maintain the general contract for the <strong>hashCode</strong> method,
+	 * which states that equal objects must have equal hash codes.
+	 * <br>
+	 * @param obj the reference object with which to compare.
+	 * 
+	 * @return true if this object is the same as the obj argument; false otherwise.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -153,6 +244,12 @@ public class PaymentEntity {
 		return true;
 	}
 
+	/**
+	 * Returns a string representation of the object. In general, the toString method returns a string that "textually represents" this object. 
+	 * The result should be a concise but informative representation that is easy for a person to read.
+	 * 
+	 * @return a string representation of the object.
+	 */
 	@Override
 	public String toString() {
 		return String.format("PaymentEntity [paymentId=%s, method=%s, amount=%s, card=%s]", paymentId, method, amount,

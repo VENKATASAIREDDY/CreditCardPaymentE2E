@@ -31,8 +31,8 @@ public interface IStatementService {
 	List<StatementModel> getBilledStatementsById(String customerId) throws CreditCardException, CustomerException, StatementException;
 	List<StatementModel> getUnBilledStatementsById(String customerId) throws CreditCardException, CustomerException, StatementException;
 	
-	List<StatementModel> statementHistory(String cardNumber) throws CreditCardException;
-	List<StatementModel> statementHistoryByUserId(String userId) throws CreditCardException, CustomerException;
+	List<StatementModel> statementHistory(String cardNumber) throws CreditCardException, StatementException;
+	List<StatementModel> statementHistoryByUserId(String userId) throws CreditCardException, CustomerException, StatementException;
 
 
 	

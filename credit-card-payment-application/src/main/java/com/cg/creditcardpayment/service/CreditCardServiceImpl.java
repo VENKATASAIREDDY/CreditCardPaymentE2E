@@ -32,29 +32,50 @@ public class CreditCardServiceImpl implements ICreditCardService {
 		
 	}
 
+	/**
+	 * Parameterized Constructor
+	 * @param creditCardRepo		the ICreditCardRepository object
+	 * @param customerRepo			the ICustomerRepository object
+	 */
 	public CreditCardServiceImpl(ICreditCardRepository creditCardRepo,ICustomerRepository customerRepo) {
 		super();
 		this.creditCardRepo = creditCardRepo;
 		this.customerRepo=customerRepo;
 		this.parser = new EMParse();
 	}
-
+	/**
+	 * @return creditCardRepo as ICreditCardRepository
+	 */
 	public ICreditCardRepository getCreditCardRepo() {
 		return creditCardRepo;
 	}
-
+	/**
+	 * 
+	 * @param creditCardRepo which is ICreditCardRepository
+	 */
 	public void setCreditCardRepo(ICreditCardRepository creditCardRepo) {
 		this.creditCardRepo = creditCardRepo;
 	}
-
+	/**
+	 * 
+	 * @return parser as EMparse
+	 */
 	public EMParse getParser() {
 		return parser;
 	}
-
+	/**
+	 * 
+	 * @param parser which is object of EMParse
+	 */
 	public void setParser(EMParse parser) {
 		this.parser = parser;
 	}
-
+	/**
+	 * This method is used to add the new 
+	 * @param creditCard which contains the new creditCard details
+	 * @return CreditCardModel which is added 
+	 * @throws CreditCardException when exception occurs
+	 */
 	@Override
 	public CreditCardModel add(CreditCardModel creditCard) throws CreditCardException {
 		if(creditCard !=null) {
@@ -66,7 +87,12 @@ public class CreditCardServiceImpl implements ICreditCardService {
 		}
 		return creditCard;
 	}
-
+	/**
+	 * This method is used to update the old creditCard
+	 * @param crdeitCard which contains the updated creditCard details
+	 * @return CreditCardModel which is updated 
+	 * @throws CreditCardException when exception occurs
+	 */
 	@Override
 	public CreditCardModel save(CreditCardModel creditCard) throws CreditCardException {
 		if(creditCard==null) {
@@ -75,7 +101,11 @@ public class CreditCardServiceImpl implements ICreditCardService {
 			return parser.parse(creditCardRepo.save(parser.parse(creditCard)));
 		}
 	}
-
+	/**
+	 * This method deletes the creditCard by its creditCardNumber
+	 * @param cardNumber which should be deleted
+	 * @throws CreditCardException when exception occurs
+	 */
 	@Override
 	public void deleteById(String creditCardId) throws CreditCardException {
 		if(creditCardId==null) {
@@ -86,7 +116,12 @@ public class CreditCardServiceImpl implements ICreditCardService {
 			creditCardRepo.deleteById(creditCardId);
 		}
 	}
-
+	/**
+	 *  This method search the CreditCard by its CreditCard number
+	 * @param CreditCardNumber to be searched
+	 * @return CreditCardModel when the CreditCard is found
+	 * @throws CreditCardException when the exception occurs
+	 */
 	@Override
 	public CreditCardModel findById(String creditCardId) throws CreditCardException {
 		if(creditCardId==null) {
@@ -97,12 +132,20 @@ public class CreditCardServiceImpl implements ICreditCardService {
 			return parser.parse(creditCardRepo.findById(creditCardId).orElse(null));
 		}
 	}
-
+	/**
+	 * This method list all the CreditCards
+	 * @return List<CreditCardModel> which contains all the CreditCard details
+	 */
 	@Override
 	public List<CreditCardModel> findAll() {
 		return creditCardRepo.findAll().stream().map(parser::parse).collect(Collectors.toList());
 	}
-
+	/**
+	 * This method confirms whether the given cardNumber is there in the data base
+	 * @param cardNumber which should be searched
+	 * @return boolean whether the given cardNumber exists or nut
+	 * @throws CreditCardException when exception occurs
+	 */
 	@Override
 	public boolean existsById(String cardNumber) throws CreditCardException {
 		if(cardNumber==null) {
@@ -110,7 +153,14 @@ public class CreditCardServiceImpl implements ICreditCardService {
 		}
 		return creditCardRepo.existsById(cardNumber);
 	}
-
+	/**
+	 * This method add CreditCard by its customer
+	 * @param creditCard which should be added
+	 * @param customerId to which the CreditCard should be added
+	 * @return CreditCardModel which is added to the given cutomer
+	 * @throws CreditCardException when the CreditCard related exception occurs
+	 * @throws CustomerException when the customer related exception occurs
+	 */
 	@Override
 	public CreditCardModel addToCustomer(CreditCardModel creditCard, String customerId) throws CreditCardException, CustomerException {
 		CustomerEntity customer=customerRepo.findById(customerId).orElse(null);
@@ -131,7 +181,12 @@ public class CreditCardServiceImpl implements ICreditCardService {
 		}
 		return creditCard;
 	}
-
+	/**
+	 * This method finds all the CreditCards by the customerId
+	 * @param customerId to which the CreditCards should be searched
+	 * @return Set<CreditCardModel> which contain all the CreditCards of the customer
+	 * @throws CustomerException when the exception occurs
+	 */
 	@Override
 	public Set<CreditCardModel> findByCustomerId(String customerId) throws CreditCardException, CustomerException {
 		CustomerEntity customer=customerRepo.findById(customerId).orElse(null);
@@ -145,7 +200,13 @@ public class CreditCardServiceImpl implements ICreditCardService {
 			return customer.getCreditCard().stream().map(parser::parse).collect(Collectors.toSet());
 		}
 	}
-
+	/**
+	 * This method deletes the CreditCard by customerId
+	 * @param customerId to delete the CreditCard
+	 * @param cardNumber to delete the CreditCard
+	 * @throws CreditCardException when CreditCard related exception occurs
+	 * @throws CustomerException when customer related exception occurs
+	 */
 	@Override
 	public void deleteCreditCardOfCustomer(String customerId, String cardNumber) throws CreditCardException, CustomerException {
 		CustomerEntity customer=customerRepo.findById(customerId).orElse(null);

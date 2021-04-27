@@ -14,34 +14,79 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.cg.creditcardpayment.model.AccountType;
-
+/**
+ * 
+ * <h1>AccountEntity</h1>
+ * The Account Entity program implements an application such that
+ * the data of the accounts is sent to the database
+ * <p>
+ *  
+ *
+ * @author  D Himavanth
+ * @version 1.0
+ * @since   2021-03-31 
+ *
+ */
 @Entity
 @Table(name="accounts")
 public class AccountEntity {
+	/**
+	 * This a local variable: {@link #accountNumber} defines the unique number for Bank account
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@Id
 	@Column(name="account_number")
 	private String accountNumber;
 	
+	/**
+	 * This a local variable: {@link #accountName} defines the name for Bank account 
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@Column(name="account_Name", nullable=false)
 	private String accountName;
 	
+	/**
+	 * This a local variable: {@link #accountBalance} defines the balance amount remaining in the Bank account
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@Column(name="balance", nullable=false)
 	private Double accountBalance;
 	
+	/**
+	 * This a local variable: {@link #accountType} defines the type of the account like SAVINGS, CURRENT, JOINT
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@Column(name="account_Type", nullable=false)
 	@Enumerated(EnumType.STRING)
 	private AccountType accountType;
 	
+	/**
+	 * This a local variable: {@link #customers} defines the set of customer belongs to paticular account
+	 */
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(name="customer_account",
 	joinColumns=@JoinColumn(name="account_number"),
 	inverseJoinColumns=@JoinColumn(name="user_id"))
 	private Set<CustomerEntity> customers;
 	
+	/**
+	 * Default Constructor
+	 */
 	public AccountEntity() {
 		/* Default Constructor */
 	}
 	
+	/**
+	 * Parameterized Constructor with parameters
+	 * @param accountNumber the unique Number for account
+	 * @param accountName  the name of the account
+	 * @param accountBalance the amount balance in the account
+	 * @param accountType the type of the account like savings, current
+	 */
 	public AccountEntity(String accountNumber, String accountName, Double accountBalance, AccountType accountType) {
 		super();
 		this.accountNumber = accountNumber;
@@ -49,43 +94,74 @@ public class AccountEntity {
 		this.accountBalance = accountBalance;
 		this.accountType = accountType;
 	}
-	
+	/**
+	 * 
+	 * @return customers as Set<CustomerEntity>
+	 */
 	public Set<CustomerEntity> getCustomers() {
 		return customers;
 	}
 
+	/**
+	 * @param customers where it contains all the customers of the account
+	 */
 	public void setCustomers(Set<CustomerEntity> customers) {
 		this.customers = customers;
 	}
 
+	
+	/**
+	 * @return the accountNumber
+	 */
 	public String getAccountNumber() {
 		return accountNumber;
 	}
 
+	/**
+	 * @param accountNumber the accountNumber to set
+	 */
 	public void setAccountNumber(String accountNumber) {
 		this.accountNumber = accountNumber;
 	}
 
+	/**
+	 * @return the accountName
+	 */
 	public String getAccountName() {
 		return accountName;
 	}
 
+	/**
+	 * @param accountName the accountName to set
+	 */
 	public void setAccountName(String accountName) {
 		this.accountName = accountName;
 	}
 
+	/**
+	 * @return the accountBalance
+	 */
 	public Double getAccountBalance() {
 		return accountBalance;
 	}
 
+	/**
+	 * @param accountBalance the accountBalance to set
+	 */
 	public void setAccountBalance(Double accountBalance) {
 		this.accountBalance = accountBalance;
 	}
 
+	/**
+	 * @return the accountType
+	 */
 	public AccountType getAccountType() {
 		return accountType;
 	}
 
+	/**
+	 * @param accountType the accountType to set
+	 */
 	public void setAccountType(AccountType accountType) {
 		this.accountType = accountType;
 	}
@@ -104,7 +180,18 @@ public class AccountEntity {
 
 	
 
-	
+	/**
+	 * Indicates whether some other object is "equal to" this one.<br><br>
+	 * The <strong>equals</strong> method for class <strong>Object</strong> implements the most discriminating possible equivalence relation on objects; 
+	 * that is, for any non-null reference values x and y, this method returns <strong>true</strong> if and only if x and y refer to the same object (<strong>x == y</strong> has the value <strong>true</strong>).
+	 * <br><br>Note that it is generally necessary to override the <strong>hashCode</strong> method whenever this method is overridden, 
+	 * so as to maintain the general contract for the <strong>hashCode</strong> method,
+	 * which states that equal objects must have equal hash codes.
+	 * <br>
+	 * @param obj the reference object with which to compare.
+	 * 
+	 * @return true if this object is the same as the obj argument; false otherwise.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -139,6 +226,12 @@ public class AccountEntity {
 		return true;
 	}
 
+	/**
+	 * Returns a string representation of the object. In general, the toString method returns a string that "textually represents" this object. 
+	 * The result should be a concise but informative representation that is easy for a person to read.
+	 * 
+	 * @return a string representation of the object.
+	 */
 	@Override
 	public String toString() {
 		return String.format(

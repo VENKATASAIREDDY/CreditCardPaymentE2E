@@ -18,48 +18,110 @@ import javax.persistence.Table;
 
 import com.cg.creditcardpayment.model.AddressModel;
 
-
+/**
+* <h1>CustomerEntity</h1>
+* The Customer Entity program implements an application such that
+* the data of the customer is sent to the database
+* <p>
+* 
+*
+* @author  P Venkata Sai Reddy
+* @version 1.0
+* @since   2021-03-31 
+*/
 @Entity
 @Table(name="customers")
 public class CustomerEntity {
-	
+	/**
+	 * This a local variable: {@link #userId} defines the unique Id for Customer
+	 */
 	@Id
 	@Column(name="user_id")
 	private String userId;
 	
+	/**
+	* This a local variable: {@link #userName} defines the user name of Customer
+	* @HasGetter
+	* @HasSetter
+	*/
 	@Column(name="user_name",nullable=false)
 	private String userName;
 	
+	/**
+	 * This a local variable: {@link #email} defines the user Email of the Customer
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@Column(name="email",nullable=false)
 	private String email;
 	
+	/**
+	 * This a local variable: {@link #contactNo} defines the user mobile number of the Customer 
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@Column(name="contact_number",nullable=false)
 	private String contactNo;
 	
+	/**
+	 * This a local variable: {@link #dob} defines the user Date of Birth of the Customer which should not be Null
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@Column(name="date_of_birth",nullable=false)
 	private  LocalDate dob;
 	
+	/**
+	 * This a local variable: {@link #user} defines the login details of the Customer
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@OneToOne(cascade=CascadeType.ALL, mappedBy="user")
 	private LoginEntity user;
 		
+	/**
+	 * This a local variable: {@link #address} defines the user Address of the Customer which should not be Null
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@Embedded
 	private AddressModel address;
 	
-
+	/**
+	 * This a local variable: {@link #creditCard} defines the credit cards of the Customer 
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@OneToMany(mappedBy="customer",cascade=CascadeType.ALL)
 	private Set<CreditCardEntity> creditCard;
 
-	
+	/**
+	 * This a local variable: {@link #accounts} defines the accounts of the Customer 
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(name="customer_account",
 	joinColumns=@JoinColumn(name="user_id"),
 	inverseJoinColumns=@JoinColumn(name="account_number"))
 	private Set<AccountEntity> accounts;
 	
+	/**
+	 * Default Constructor
+	 */
 	public CustomerEntity() {
 		/* Default Constructor*/
 	}
 	
+	/**
+	 * Parameterized Constructor with parameters
+	 * @param userId      the unique Id for Customer
+	 * @param userName    the name of the Customer
+	 * @param email       the email of the Customer
+	 * @param contactNo   the contact number of Customer 
+	 * @param dob		  the date of birth of Customer
+	 * @param address     the Address of the Customer
+	 */
 	public CustomerEntity(String userId, String userName, String email, String contactNo, LocalDate dob, AddressModel address) {
 		super();
 		this.userId = userId;
@@ -71,55 +133,119 @@ public class CustomerEntity {
 	}
 	
 	
+	
+	/**
+	 * @return the userId
+	 */
+	public String getUserId() {
+		return userId;
+	}
+
+	/**
+	 * @param userId the userId to set
+	 */
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	/**
+	 * @return the userName
+	 */
+	public String getName() {
+		return userName;
+	}
+
+	/**
+	 * @param userName the userName to set
+	 */
+	public void setName(String userName) {
+		this.userName = userName;
+	}
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	/**
+	 * @return the contactNo
+	 */
+	public String getContactNo() {
+		return contactNo;
+	}
+
+	/**
+	 * @param contactNo the contactNo to set
+	 */
+	public void setContactNo(String contactNo) {
+		this.contactNo = contactNo;
+	}
+
+	/**
+	 * @return the dob
+	 */
+	public LocalDate getDob() {
+		return dob;
+	}
+
+	/**
+	 * @param dob the dob to set
+	 */
+	public void setDob(LocalDate dob) {
+		this.dob = dob;
+	}
+
+	/**
+	 * @return the address
+	 */
+	public AddressModel getAddress() {
+		return address;
+	}
+
+	/**
+	 * @param address the address to set
+	 */
+	public void setAddress(AddressModel address) {
+		this.address = address;
+	}
+
+	/**
+	 * @return the creditCard
+	 */
+	public Set<CreditCardEntity> getCreditCard() {
+		return creditCard;
+	}
+
+	/**
+	 * @param creditCard the creditCard to set
+	 */
+	public void setCreditCard(Set<CreditCardEntity> creditCard) {
+		this.creditCard = creditCard;
+	}
+
+	/**
+	 * @return the accounts
+	 */
 	public Set<AccountEntity> getAccounts() {
 		return accounts;
 	}
+
+	/**
+	 * @param accounts the accounts to set
+	 */
 	public void setAccounts(Set<AccountEntity> accounts) {
 		this.accounts = accounts;
 	}
 
-	public Set<CreditCardEntity> getCreditCard() {
-		return creditCard;
-	}
-	public void setCreditCard(Set<CreditCardEntity> creditCard) {
-		this.creditCard = creditCard;
-	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	public String getName() {
-		return userName;
-	}
-	public void setName(String userName) {
-		this.userName = userName;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getContactNo() {
-		return contactNo;
-	}
-	public void setContactNo(String contactNo) {
-		this.contactNo = contactNo;
-	}
-	public LocalDate getDob() {
-		return dob;
-	}
-	public void setDob(LocalDate dob) {
-		this.dob = dob;
-	}
-	public AddressModel getAddress() {
-		return address;
-	}
-	public void setAddress(AddressModel address) {
-		this.address = address;
-	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -132,6 +258,19 @@ public class CustomerEntity {
 		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
 	}
+	
+	/**
+	 * Indicates whether some other object is "equal to" this one.<br><br>
+	 * The <strong>equals</strong> method for class <strong>Object</strong> implements the most discriminating possible equivalence relation on objects; 
+	 * that is, for any non-null reference values x and y, this method returns <strong>true</strong> if and only if x and y refer to the same object (<strong>x == y</strong> has the value <strong>true</strong>).
+	 * <br><br>Note that it is generally necessary to override the <strong>hashCode</strong> method whenever this method is overridden, 
+	 * so as to maintain the general contract for the <strong>hashCode</strong> method,
+	 * which states that equal objects must have equal hash codes.
+	 * <br>
+	 * @param obj the reference object with which to compare.
+	 * 
+	 * @return true if this object is the same as the obj argument; false otherwise.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -173,6 +312,13 @@ public class CustomerEntity {
 			return false;
 		return true;
 	}
+	
+	/**
+	 * Returns a string representation of the object. In general, the toString method returns a string that "textually represents" this object. 
+	 * The result should be a concise but informative representation that is easy for a person to read.
+	 * 
+	 * @return a string representation of the object.
+	 */
 	@Override
 	public String toString() {
 		return String.format("userId=%s, userName=%s, email=%s, contactNo=%s, dob=%s, address=%s", userId, userName,

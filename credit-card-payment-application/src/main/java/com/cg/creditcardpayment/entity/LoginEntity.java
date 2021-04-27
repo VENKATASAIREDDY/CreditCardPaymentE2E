@@ -7,28 +7,67 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
+/**
+* <h1>LoginEntity</h1>
+* The Login Entity program implements an application such that
+* the login data is sent to the database
+* <p>
+* 
+*
+* @author  Shambhavi
+* @version 1.0
+* @since   2021-03-31 
+*/
 @Entity
 @Table(name="users")
 public class LoginEntity {
-	
+	/**
+	 * This a local variable: {@link #userId} userId of the user
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@Id
 	@Column(name="user_id")
 	private String userId;
+	
+	/**
+	 * This a local variable: {@link #password} password of the user
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@Column(name="password", nullable=false)
 	private String password;
+	
+	/**
+	 * This a local variable: {@link #role} role of the user
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@Column(name="role",nullable=false)
 	private String role;
 	
+	/**
+	 * This a local variable: {@link #user} consists of the customer to which the login details belongs to
+	 * @HasGetter
+	 * @HasSetter
+	 */
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="user_id")
 	private CustomerEntity user;
 	
-	
+	/**
+	 * Default Constructor
+	 */
 	public LoginEntity() {
 		/* Default Constructor*/
 	}
-
+	
+	/**
+	 * 
+	 * @param userId		the unique id of the user
+	 * @param password		the password to login 
+	 * @param role			the role of the user
+	 */
 	public LoginEntity(String userId, String password, String role) {
 		super();
 		this.userId = userId;
@@ -36,28 +75,61 @@ public class LoginEntity {
 		this.role = role;
 	}
 
+	
+	/**
+	 * @return the userId
+	 */
 	public String getUserId() {
 		return userId;
 	}
 
+	/**
+	 * @param userId the userId to set
+	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
+	/**
+	 * @return the password
+	 */
 	public String getPassword() {
 		return password;
 	}
 
+	/**
+	 * @param password the password to set
+	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
+	/**
+	 * @return the role
+	 */
 	public String getRole() {
 		return role;
 	}
 
+	/**
+	 * @param role the role to set
+	 */
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	/**
+	 * @return the user
+	 */
+	public CustomerEntity getUser() {
+		return user;
+	}
+
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(CustomerEntity user) {
+		this.user = user;
 	}
 
 	@Override
@@ -70,6 +142,18 @@ public class LoginEntity {
 		return result;
 	}
 
+	/**
+	 * Indicates whether some other object is "equal to" this one.<br><br>
+	 * The <strong>equals</strong> method for class <strong>Object</strong> implements the most discriminating possible equivalence relation on objects; 
+	 * that is, for any non-null reference values x and y, this method returns <strong>true</strong> if and only if x and y refer to the same object (<strong>x == y</strong> has the value <strong>true</strong>).
+	 * <br><br>Note that it is generally necessary to override the <strong>hashCode</strong> method whenever this method is overridden, 
+	 * so as to maintain the general contract for the <strong>hashCode</strong> method,
+	 * which states that equal objects must have equal hash codes.
+	 * <br>
+	 * @param obj the reference object with which to compare.
+	 * 
+	 * @return true if this object is the same as the obj argument; false otherwise.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -97,6 +181,12 @@ public class LoginEntity {
 		return true;
 	}
 
+	/**
+	 * Returns a string representation of the object. In general, the toString method returns a string that "textually represents" this object. 
+	 * The result should be a concise but informative representation that is easy for a person to read.
+	 * 
+	 * @return a string representation of the object.
+	 */
 	@Override
 	public String toString() {
 		return String.format("userId=%s, password=%s, role=%s", userId, password, role);
